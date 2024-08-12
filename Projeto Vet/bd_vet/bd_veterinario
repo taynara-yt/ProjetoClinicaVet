@@ -1,0 +1,675 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 10.15
+-- Dumped by pg_dump version 10.15
+
+-- Started on 2020-12-10 17:53:34
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+DROP DATABASE bd_vet;
+--
+-- TOC entry 2870 (class 1262 OID 16474)
+-- Name: bd_vet; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE bd_vet WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'Portuguese_Brazil.1252' LC_CTYPE = 'Portuguese_Brazil.1252';
+
+
+ALTER DATABASE bd_vet OWNER TO postgres;
+
+\connect bd_vet
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 1 (class 3079 OID 12924)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 2873 (class 0 OID 0)
+-- Dependencies: 1
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 203 (class 1259 OID 16532)
+-- Name: animal; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.animal (
+    id_animal integer NOT NULL,
+    nome_animal character varying(45) NOT NULL,
+    raca character varying(45) NOT NULL,
+    porte character varying(20) NOT NULL,
+    sexo character varying(5) NOT NULL,
+    peso character varying(20) NOT NULL,
+    id_cliente integer NOT NULL
+);
+
+
+ALTER TABLE public.animal OWNER TO postgres;
+
+--
+-- TOC entry 202 (class 1259 OID 16530)
+-- Name: animal_id_animal_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.animal_id_animal_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.animal_id_animal_seq OWNER TO postgres;
+
+--
+-- TOC entry 2874 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: animal_id_animal_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.animal_id_animal_seq OWNED BY public.animal.id_animal;
+
+
+--
+-- TOC entry 201 (class 1259 OID 16511)
+-- Name: cliente; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.cliente (
+    id_cliente integer NOT NULL,
+    nome_cliente character varying(45) NOT NULL,
+    rua_cliente character varying(45) NOT NULL,
+    cpf_cliente character varying(20) NOT NULL,
+    tel_cliente character varying(20) NOT NULL,
+    bairro_cliente character varying(45) NOT NULL,
+    cidade_cliente character varying(45) NOT NULL,
+    numero_cliente character varying(25) NOT NULL
+);
+
+
+ALTER TABLE public.cliente OWNER TO postgres;
+
+--
+-- TOC entry 200 (class 1259 OID 16509)
+-- Name: cliente_id_cliente_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.cliente_id_cliente_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cliente_id_cliente_seq OWNER TO postgres;
+
+--
+-- TOC entry 2875 (class 0 OID 0)
+-- Dependencies: 200
+-- Name: cliente_id_cliente_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.cliente_id_cliente_seq OWNED BY public.cliente.id_cliente;
+
+
+--
+-- TOC entry 206 (class 1259 OID 16608)
+-- Name: consulta; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.consulta (
+    id_consulta integer NOT NULL,
+    sintomas character varying(45) NOT NULL,
+    data_consulta date,
+    id_veterinario integer NOT NULL,
+    id_animal integer NOT NULL,
+    diagnostico character varying(45),
+    turno character varying(45)
+);
+
+
+ALTER TABLE public.consulta OWNER TO postgres;
+
+--
+-- TOC entry 205 (class 1259 OID 16606)
+-- Name: consulta_id_consulta_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.consulta_id_consulta_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.consulta_id_consulta_seq OWNER TO postgres;
+
+--
+-- TOC entry 2876 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: consulta_id_consulta_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.consulta_id_consulta_seq OWNED BY public.consulta.id_consulta;
+
+
+--
+-- TOC entry 208 (class 1259 OID 16636)
+-- Name: exame; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.exame (
+    id_exame integer NOT NULL,
+    nome character varying(45) NOT NULL,
+    id_veterinario integer NOT NULL,
+    id_consulta integer NOT NULL
+);
+
+
+ALTER TABLE public.exame OWNER TO postgres;
+
+--
+-- TOC entry 207 (class 1259 OID 16634)
+-- Name: exame_id_exame_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.exame_id_exame_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.exame_id_exame_seq OWNER TO postgres;
+
+--
+-- TOC entry 2877 (class 0 OID 0)
+-- Dependencies: 207
+-- Name: exame_id_exame_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.exame_id_exame_seq OWNED BY public.exame.id_exame;
+
+
+--
+-- TOC entry 197 (class 1259 OID 16477)
+-- Name: funcionarios; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.funcionarios (
+    id_funcionario integer NOT NULL,
+    nome character varying(45) NOT NULL,
+    rua character varying(45) NOT NULL,
+    cpf character varying(25) NOT NULL,
+    tel character varying(20) NOT NULL,
+    bairro character varying(45) NOT NULL,
+    cidade character varying(45) NOT NULL,
+    numero character varying(45) NOT NULL
+);
+
+
+ALTER TABLE public.funcionarios OWNER TO postgres;
+
+--
+-- TOC entry 196 (class 1259 OID 16475)
+-- Name: funcionarios_id_funcionario_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.funcionarios_id_funcionario_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.funcionarios_id_funcionario_seq OWNER TO postgres;
+
+--
+-- TOC entry 2878 (class 0 OID 0)
+-- Dependencies: 196
+-- Name: funcionarios_id_funcionario_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.funcionarios_id_funcionario_seq OWNED BY public.funcionarios.id_funcionario;
+
+
+--
+-- TOC entry 204 (class 1259 OID 16596)
+-- Name: secretaria; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.secretaria (
+    id_secretaria integer NOT NULL,
+    id_funcionario integer NOT NULL
+);
+
+
+ALTER TABLE public.secretaria OWNER TO postgres;
+
+--
+-- TOC entry 199 (class 1259 OID 16498)
+-- Name: veterinario; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.veterinario (
+    id_veterinario integer NOT NULL,
+    crmv character varying(25) NOT NULL,
+    id_funcionario integer NOT NULL
+);
+
+
+ALTER TABLE public.veterinario OWNER TO postgres;
+
+--
+-- TOC entry 198 (class 1259 OID 16496)
+-- Name: veterinario_id_veterinario_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.veterinario_id_veterinario_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.veterinario_id_veterinario_seq OWNER TO postgres;
+
+--
+-- TOC entry 2879 (class 0 OID 0)
+-- Dependencies: 198
+-- Name: veterinario_id_veterinario_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.veterinario_id_veterinario_seq OWNED BY public.veterinario.id_veterinario;
+
+
+--
+-- TOC entry 2707 (class 2604 OID 16535)
+-- Name: animal id_animal; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.animal ALTER COLUMN id_animal SET DEFAULT nextval('public.animal_id_animal_seq'::regclass);
+
+
+--
+-- TOC entry 2706 (class 2604 OID 16514)
+-- Name: cliente id_cliente; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cliente ALTER COLUMN id_cliente SET DEFAULT nextval('public.cliente_id_cliente_seq'::regclass);
+
+
+--
+-- TOC entry 2708 (class 2604 OID 16611)
+-- Name: consulta id_consulta; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.consulta ALTER COLUMN id_consulta SET DEFAULT nextval('public.consulta_id_consulta_seq'::regclass);
+
+
+--
+-- TOC entry 2709 (class 2604 OID 16639)
+-- Name: exame id_exame; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.exame ALTER COLUMN id_exame SET DEFAULT nextval('public.exame_id_exame_seq'::regclass);
+
+
+--
+-- TOC entry 2704 (class 2604 OID 16480)
+-- Name: funcionarios id_funcionario; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.funcionarios ALTER COLUMN id_funcionario SET DEFAULT nextval('public.funcionarios_id_funcionario_seq'::regclass);
+
+
+--
+-- TOC entry 2705 (class 2604 OID 16501)
+-- Name: veterinario id_veterinario; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.veterinario ALTER COLUMN id_veterinario SET DEFAULT nextval('public.veterinario_id_veterinario_seq'::regclass);
+
+
+--
+-- TOC entry 2859 (class 0 OID 16532)
+-- Dependencies: 203
+-- Data for Name: animal; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.animal (id_animal, nome_animal, raca, porte, sexo, peso, id_cliente) VALUES (2, 'Yutão', 'Vira-Lata', 'Médio', 'M', '8.0', 1);
+INSERT INTO public.animal (id_animal, nome_animal, raca, porte, sexo, peso, id_cliente) VALUES (3, 'Menina', 'Vira-Lata', 'Médio', 'F', '3.0', 1);
+INSERT INTO public.animal (id_animal, nome_animal, raca, porte, sexo, peso, id_cliente) VALUES (6, 'Pandora', 'PitBull', 'Pequeno', 'F', 'Dez', 2);
+INSERT INTO public.animal (id_animal, nome_animal, raca, porte, sexo, peso, id_cliente) VALUES (7, 'Yuka', 'Vira-Lata', 'Grande', 'F', '4.0', 1);
+INSERT INTO public.animal (id_animal, nome_animal, raca, porte, sexo, peso, id_cliente) VALUES (8, 'IU', 'Vira-lata', 'Médio', 'M', '16.0', 3);
+INSERT INTO public.animal (id_animal, nome_animal, raca, porte, sexo, peso, id_cliente) VALUES (9, 'Remi', 'xuxu', 'pequeno', 'F', '12.0', 3);
+INSERT INTO public.animal (id_animal, nome_animal, raca, porte, sexo, peso, id_cliente) VALUES (10, 'Remi', 'vira-lata', 'pequeno', 'M', '20.0', 3);
+INSERT INTO public.animal (id_animal, nome_animal, raca, porte, sexo, peso, id_cliente) VALUES (11, 'xuxuzao', 'vira-lata', 'pequeno', 'M', '20.0', 3);
+
+
+--
+-- TOC entry 2857 (class 0 OID 16511)
+-- Dependencies: 201
+-- Data for Name: cliente; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.cliente (id_cliente, nome_cliente, rua_cliente, cpf_cliente, tel_cliente, bairro_cliente, cidade_cliente, numero_cliente) VALUES (1, 'Yutinha', '14 de Março', '02855541288', '991282722', 'Cerejeiras', 'Osaka', '1010');
+INSERT INTO public.cliente (id_cliente, nome_cliente, rua_cliente, cpf_cliente, tel_cliente, bairro_cliente, cidade_cliente, numero_cliente) VALUES (2, 'Keuly Kemily', '21 de Abril', '03719837622', '993687143', 'Centro', 'Titans', '2473');
+INSERT INTO public.cliente (id_cliente, nome_cliente, rua_cliente, cpf_cliente, tel_cliente, bairro_cliente, cidade_cliente, numero_cliente) VALUES (3, 'Joji', 'Des Garçons', '1234567', '9876543', 'Miyavi', 'Mirei', '5674');
+
+
+--
+-- TOC entry 2862 (class 0 OID 16608)
+-- Dependencies: 206
+-- Data for Name: consulta; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.consulta (id_consulta, sintomas, data_consulta, id_veterinario, id_animal, diagnostico, turno) VALUES (3, 'Febre', '2020-12-01', 1, 2, NULL, NULL);
+INSERT INTO public.consulta (id_consulta, sintomas, data_consulta, id_veterinario, id_animal, diagnostico, turno) VALUES (4, 'DOR DOR MT DOR', NULL, 2, 6, NULL, NULL);
+INSERT INTO public.consulta (id_consulta, sintomas, data_consulta, id_veterinario, id_animal, diagnostico, turno) VALUES (5, 'DOR DOR MT DOR', NULL, 2, 6, NULL, NULL);
+INSERT INTO public.consulta (id_consulta, sintomas, data_consulta, id_veterinario, id_animal, diagnostico, turno) VALUES (6, 'tristeza', NULL, 3, 9, NULL, NULL);
+INSERT INTO public.consulta (id_consulta, sintomas, data_consulta, id_veterinario, id_animal, diagnostico, turno) VALUES (7, 'desanimo', NULL, 3, 9, NULL, NULL);
+INSERT INTO public.consulta (id_consulta, sintomas, data_consulta, id_veterinario, id_animal, diagnostico, turno) VALUES (8, 'dor dor', NULL, 1, 2, NULL, NULL);
+INSERT INTO public.consulta (id_consulta, sintomas, data_consulta, id_veterinario, id_animal, diagnostico, turno) VALUES (9, 'dor dor', NULL, 1, 2, NULL, NULL);
+INSERT INTO public.consulta (id_consulta, sintomas, data_consulta, id_veterinario, id_animal, diagnostico, turno) VALUES (10, 'DOR DOR MT DOR', '2020-12-09', 3, 9, NULL, NULL);
+INSERT INTO public.consulta (id_consulta, sintomas, data_consulta, id_veterinario, id_animal, diagnostico, turno) VALUES (11, 'desanimo e cansaço', '2020-12-10', 3, 7, NULL, NULL);
+INSERT INTO public.consulta (id_consulta, sintomas, data_consulta, id_veterinario, id_animal, diagnostico, turno) VALUES (12, 'dores no corpo', '2020-12-10', 3, 7, NULL, NULL);
+INSERT INTO public.consulta (id_consulta, sintomas, data_consulta, id_veterinario, id_animal, diagnostico, turno) VALUES (13, 'alegria', '2020-12-10', 2, 6, NULL, NULL);
+INSERT INTO public.consulta (id_consulta, sintomas, data_consulta, id_veterinario, id_animal, diagnostico, turno) VALUES (14, 'alegria alegria alegria ', '2020-12-09', 3, 3, 'Felicidade ne', NULL);
+INSERT INTO public.consulta (id_consulta, sintomas, data_consulta, id_veterinario, id_animal, diagnostico, turno) VALUES (15, 'dores dores', '2020-12-10', 2, 3, 'ta mal ne', NULL);
+INSERT INTO public.consulta (id_consulta, sintomas, data_consulta, id_veterinario, id_animal, diagnostico, turno) VALUES (16, 'alegria alegria ', '2020-12-10', 2, 3, 'hpb', NULL);
+INSERT INTO public.consulta (id_consulta, sintomas, data_consulta, id_veterinario, id_animal, diagnostico, turno) VALUES (17, 'sono', '2020-12-10', 2, 6, 'vai dormir ', NULL);
+INSERT INTO public.consulta (id_consulta, sintomas, data_consulta, id_veterinario, id_animal, diagnostico, turno) VALUES (18, 'dores de cabeça', '2020-12-10', 1, 3, 'dipirona ne', 'Vespertino');
+INSERT INTO public.consulta (id_consulta, sintomas, data_consulta, id_veterinario, id_animal, diagnostico, turno) VALUES (19, 'vômito, febre, perda de apetite', '2020-12-10', 1, 11, 'cinomose', 'Vespertino');
+
+
+--
+-- TOC entry 2864 (class 0 OID 16636)
+-- Dependencies: 208
+-- Data for Name: exame; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.exame (id_exame, nome, id_veterinario, id_consulta) VALUES (15, 'Ultrassonografia', 3, 3);
+INSERT INTO public.exame (id_exame, nome, id_veterinario, id_consulta) VALUES (21, 'Raio x', 4, 4);
+INSERT INTO public.exame (id_exame, nome, id_veterinario, id_consulta) VALUES (22, 'Oftalmológico', 3, 3);
+INSERT INTO public.exame (id_exame, nome, id_veterinario, id_consulta) VALUES (23, 'Eletrocardiograma', 3, 3);
+INSERT INTO public.exame (id_exame, nome, id_veterinario, id_consulta) VALUES (24, 'Exame de sanggue', 3, 3);
+INSERT INTO public.exame (id_exame, nome, id_veterinario, id_consulta) VALUES (25, 'Exame Odontológico', 3, 3);
+
+
+--
+-- TOC entry 2853 (class 0 OID 16477)
+-- Dependencies: 197
+-- Data for Name: funcionarios; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.funcionarios (id_funcionario, nome, rua, cpf, tel, bairro, cidade, numero) VALUES (1, 'Nakamoto Yuta', '21 de Abril', '02336581388', '992227052', 'A', 'Utah', '2375');
+INSERT INTO public.funcionarios (id_funcionario, nome, rua, cpf, tel, bairro, cidade, numero) VALUES (2, 'Mônica Santos', 'Sakura', '02749013488', '991558732', 'B', 'Manaus', '1234');
+INSERT INTO public.funcionarios (id_funcionario, nome, rua, cpf, tel, bairro, cidade, numero) VALUES (3, 'Suzy Silveira', '25 de Dezembro', '02399812766', '992346781', 'C', 'Itacoatiara', '5687');
+INSERT INTO public.funcionarios (id_funcionario, nome, rua, cpf, tel, bairro, cidade, numero) VALUES (5, 'Cyndi', '	Vaya Con Dios', '123456', '999999999', 'Time After Time', 'Midnight', '54321');
+INSERT INTO public.funcionarios (id_funcionario, nome, rua, cpf, tel, bairro, cidade, numero) VALUES (6, 'Cleo', 'Sol', '123356', '88888888', 'Drum Go Dum', 'Villain', '98765');
+INSERT INTO public.funcionarios (id_funcionario, nome, rua, cpf, tel, bairro, cidade, numero) VALUES (7, 'Gaeko', 'Lua', '65478', '55555555', 'Day&Night', 'RUNY', '72687');
+
+
+--
+-- TOC entry 2860 (class 0 OID 16596)
+-- Dependencies: 204
+-- Data for Name: secretaria; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.secretaria (id_secretaria, id_funcionario) VALUES (1, 2);
+
+
+--
+-- TOC entry 2855 (class 0 OID 16498)
+-- Dependencies: 199
+-- Data for Name: veterinario; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.veterinario (id_veterinario, crmv, id_funcionario) VALUES (1, 'crmv-am', 1);
+INSERT INTO public.veterinario (id_veterinario, crmv, id_funcionario) VALUES (2, 'CRMV-A', 3);
+INSERT INTO public.veterinario (id_veterinario, crmv, id_funcionario) VALUES (3, 'CRMV-B', 5);
+INSERT INTO public.veterinario (id_veterinario, crmv, id_funcionario) VALUES (4, 'CRMV-C', 6);
+
+
+--
+-- TOC entry 2880 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: animal_id_animal_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.animal_id_animal_seq', 11, true);
+
+
+--
+-- TOC entry 2881 (class 0 OID 0)
+-- Dependencies: 200
+-- Name: cliente_id_cliente_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.cliente_id_cliente_seq', 3, true);
+
+
+--
+-- TOC entry 2882 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: consulta_id_consulta_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.consulta_id_consulta_seq', 19, true);
+
+
+--
+-- TOC entry 2883 (class 0 OID 0)
+-- Dependencies: 207
+-- Name: exame_id_exame_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.exame_id_exame_seq', 26, true);
+
+
+--
+-- TOC entry 2884 (class 0 OID 0)
+-- Dependencies: 196
+-- Name: funcionarios_id_funcionario_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.funcionarios_id_funcionario_seq', 7, true);
+
+
+--
+-- TOC entry 2885 (class 0 OID 0)
+-- Dependencies: 198
+-- Name: veterinario_id_veterinario_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.veterinario_id_veterinario_seq', 4, true);
+
+
+--
+-- TOC entry 2717 (class 2606 OID 16537)
+-- Name: animal animal_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.animal
+    ADD CONSTRAINT animal_pkey PRIMARY KEY (id_animal);
+
+
+--
+-- TOC entry 2715 (class 2606 OID 16516)
+-- Name: cliente cliente_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cliente
+    ADD CONSTRAINT cliente_pkey PRIMARY KEY (id_cliente);
+
+
+--
+-- TOC entry 2721 (class 2606 OID 16613)
+-- Name: consulta consulta_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.consulta
+    ADD CONSTRAINT consulta_pkey PRIMARY KEY (id_consulta);
+
+
+--
+-- TOC entry 2723 (class 2606 OID 16641)
+-- Name: exame exame_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.exame
+    ADD CONSTRAINT exame_pkey PRIMARY KEY (id_exame);
+
+
+--
+-- TOC entry 2711 (class 2606 OID 16482)
+-- Name: funcionarios funcionarios_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.funcionarios
+    ADD CONSTRAINT funcionarios_pkey PRIMARY KEY (id_funcionario);
+
+
+--
+-- TOC entry 2719 (class 2606 OID 16600)
+-- Name: secretaria secretaria_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.secretaria
+    ADD CONSTRAINT secretaria_pkey PRIMARY KEY (id_secretaria);
+
+
+--
+-- TOC entry 2713 (class 2606 OID 16503)
+-- Name: veterinario veterinario_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.veterinario
+    ADD CONSTRAINT veterinario_pkey PRIMARY KEY (id_veterinario);
+
+
+--
+-- TOC entry 2725 (class 2606 OID 16538)
+-- Name: animal animal_id_cliente_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.animal
+    ADD CONSTRAINT animal_id_cliente_fkey FOREIGN KEY (id_cliente) REFERENCES public.cliente(id_cliente);
+
+
+--
+-- TOC entry 2728 (class 2606 OID 16629)
+-- Name: consulta consulta_id_animal_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.consulta
+    ADD CONSTRAINT consulta_id_animal_fkey FOREIGN KEY (id_animal) REFERENCES public.animal(id_animal);
+
+
+--
+-- TOC entry 2727 (class 2606 OID 16624)
+-- Name: consulta consulta_id_veterinario_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.consulta
+    ADD CONSTRAINT consulta_id_veterinario_fkey FOREIGN KEY (id_veterinario) REFERENCES public.veterinario(id_veterinario);
+
+
+--
+-- TOC entry 2730 (class 2606 OID 16647)
+-- Name: exame exame_id_consulta_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.exame
+    ADD CONSTRAINT exame_id_consulta_fkey FOREIGN KEY (id_consulta) REFERENCES public.consulta(id_consulta);
+
+
+--
+-- TOC entry 2729 (class 2606 OID 16642)
+-- Name: exame exame_id_veterinario_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.exame
+    ADD CONSTRAINT exame_id_veterinario_fkey FOREIGN KEY (id_veterinario) REFERENCES public.veterinario(id_veterinario);
+
+
+--
+-- TOC entry 2726 (class 2606 OID 16601)
+-- Name: secretaria secretaria_id_funcionario_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.secretaria
+    ADD CONSTRAINT secretaria_id_funcionario_fkey FOREIGN KEY (id_funcionario) REFERENCES public.funcionarios(id_funcionario);
+
+
+--
+-- TOC entry 2724 (class 2606 OID 16504)
+-- Name: veterinario veterinario_id_funcionario_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.veterinario
+    ADD CONSTRAINT veterinario_id_funcionario_fkey FOREIGN KEY (id_funcionario) REFERENCES public.funcionarios(id_funcionario);
+
+
+--
+-- TOC entry 2872 (class 0 OID 0)
+-- Dependencies: 6
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: postgres
+--
+
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2020-12-10 17:53:35
+
+--
+-- PostgreSQL database dump complete
+--
+
